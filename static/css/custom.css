@@ -1,0 +1,135 @@
+/* =========================================================================
+   IT App Portal — Custom CSS
+   Berisi style yang bersifat DINAMIS (diubah oleh JavaScript).
+   Style dinamis sengaja ditulis sebagai CSS biasa, bukan class Tailwind,
+   agar tidak bergantung pada proses "purge/scan" milik Tailwind CDN.
+   ========================================================================= */
+
+/* ---------- 0. Pastikan atribut [hidden] selalu menyembunyikan elemen ---------- */
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- 1. Animasi masuk kartu ---------- */
+.app-card {
+  animation: portal-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes portal-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hormati preferensi pengguna yang tidak ingin animasi */
+@media (prefers-reduced-motion: reduce) {
+  .app-card,
+  .status-ping,
+  #refresh-icon {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- 2. Badge status (UP / DOWN / UNKNOWN) ---------- */
+.status-badge {
+  border-width: 1px;
+  border-style: solid;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.badge-unknown {
+  color: #64748b;
+  background-color: rgba(148, 163, 184, 0.12);
+  border-color: rgba(148, 163, 184, 0.30);
+}
+.dark .badge-unknown {
+  color: #94a3b8;
+}
+
+.badge-up {
+  color: #047857;
+  background-color: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.32);
+}
+.dark .badge-up {
+  color: #34d399;
+}
+
+.badge-down {
+  color: #be123c;
+  background-color: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.32);
+}
+.dark .badge-down {
+  color: #fb7185;
+}
+
+/* ---------- 3. Titik status ---------- */
+.status-dot {
+  transition: background-color 0.25s ease;
+}
+.dot-unknown { background-color: #94a3b8; }
+.dot-up      { background-color: #10b981; }
+.dot-down    { background-color: #f43f5e; }
+
+/* ---------- 4. Efek "ping" (denyut) di belakang titik status ---------- */
+.status-ping {
+  opacity: 0;
+}
+.ping-up {
+  background-color: #10b981;
+  opacity: 0.75;
+  animation: portal-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.ping-down {
+  background-color: #f43f5e;
+  opacity: 0.55;
+  animation: portal-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes portal-ping {
+  75%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* ---------- 5. Chip kategori aktif ---------- */
+.category-chip.is-active {
+  border-color: #6366f1;
+  background-color: #6366f1;
+  color: #ffffff;
+}
+
+/* ---------- 6. Scrollbar halus ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.4);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.65);
+}
+
+/* ---------- 7. Batasi deskripsi menjadi 2 baris ---------- */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

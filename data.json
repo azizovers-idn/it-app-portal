@@ -1,0 +1,96 @@
+{
+  "title": "IT App Portal",
+  "subtitle": "Pusat akses cepat aplikasi internal tim IT",
+  "apps": [
+    {
+      "id": "helpdesk",
+      "name": "IT Helpdesk / Ticketing",
+      "url": "https://helpdesk.example.com",
+      "icon": "fa-solid fa-headset",
+      "description": "Buat, pantau, dan kelola tiket gangguan pengguna.",
+      "category": "Support",
+      "color": "indigo"
+    },
+    {
+      "id": "monitoring",
+      "name": "Server Monitoring",
+      "url": "https://monitoring.example.com",
+      "icon": "fa-solid fa-chart-line",
+      "description": "Grafik CPU, RAM, disk, dan uptime seluruh server.",
+      "category": "Infrastruktur",
+      "color": "emerald"
+    },
+    {
+      "id": "grafana",
+      "name": "Grafana Dashboard",
+      "url": "https://grafana.example.com",
+      "icon": "fa-solid fa-gauge-high",
+      "description": "Visualisasi metrik dan log aplikasi produksi.",
+      "category": "Infrastruktur",
+      "color": "amber"
+    },
+    {
+      "id": "gitlab",
+      "name": "GitLab Repository",
+      "url": "https://gitlab.example.com",
+      "icon": "fa-brands fa-gitlab",
+      "description": "Source code, merge request, dan CI/CD pipeline.",
+      "category": "Development",
+      "color": "orange"
+    },
+    {
+      "id": "jenkins",
+      "name": "Jenkins CI",
+      "url": "https://jenkins.example.com",
+      "icon": "fa-solid fa-code-branch",
+      "description": "Otomasi build dan deployment aplikasi internal.",
+      "category": "Development",
+      "color": "rose"
+    },
+    {
+      "id": "router",
+      "name": "Mikrotik Router",
+      "url": "https://192.168.1.1",
+      "icon": "fa-solid fa-network-wired",
+      "description": "Manajemen jaringan, hotspot, dan bandwidth kantor.",
+      "category": "Jaringan",
+      "color": "blue"
+    },
+    {
+      "id": "nas",
+      "name": "NAS File Server",
+      "url": "https://nas.example.local",
+      "icon": "fa-solid fa-hard-drive",
+      "description": "Penyimpanan bersama, backup, dan arsip dokumen IT.",
+      "category": "Infrastruktur",
+      "color": "slate"
+    },
+    {
+      "id": "wiki",
+      "name": "IT Knowledge Base",
+      "url": "https://wiki.example.com",
+      "icon": "fa-solid fa-book",
+      "description": "SOP, dokumentasi konfigurasi, dan troubleshooting.",
+      "category": "Knowledge",
+      "color": "violet"
+    },
+    {
+      "id": "inventory",
+      "name": "Asset Inventory",
+      "url": "https://inventory.example.com",
+      "icon": "fa-solid fa-boxes-stacked",
+      "description": "Data inventaris perangkat, lisensi, dan peminjaman.",
+      "category": "Knowledge",
+      "color": "cyan"
+    },
+    {
+      "id": "vpn",
+      "name": "VPN Gateway",
+      "url": "https://vpn.example.com",
+      "icon": "fa-solid fa-shield-halved",
+      "description": "Akses aman ke jaringan internal dari luar kantor.",
+      "category": "Jaringan",
+      "color": "teal"
+    }
+  ]
+}
