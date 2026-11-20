@@ -271,10 +271,10 @@ Contoh respons `/api/status`:
 {
   "cached": false,
   "checked_at": "2026-11-20T03:15:22+00:00",
-  "summary": { "total": 10, "up": 9, "down": 1 },
+  "summary": { "total": 1, "up": 1, "down": 0 },
   "results": {
-    "helpdesk": {
-      "id": "helpdesk",
+    "printer-dashboard": {
+      "id": "printer-dashboard",
       "status": "UP",
       "http_status": 200,
       "latency_ms": 145,
