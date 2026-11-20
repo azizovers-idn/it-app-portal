@@ -300,6 +300,32 @@ Contoh respons `/api/status`:
 
 ---
 
+## 🔄 Alur Kerja Git (Auto-Push)
+
+Repo ini sudah dikonfigurasi agar **setiap commit otomatis terkirim ke GitHub**.
+
+**Aktifkan hook di komputer lain** (sekali saja setelah `git clone`):
+
+```bash
+git config core.hooksPath .githooks
+```
+
+Setelah itu, setiap `git commit` akan otomatis menjalankan `git push`.
+
+**Cara cepat menyimpan + mengirim perubahan** — gunakan skrip bantu:
+
+```powershell
+.\tools\sync.ps1 "tambah aplikasi VPN"
+```
+
+Skrip ini melakukan `git add -A` → `commit` → `push` sekaligus.
+Tambahkan `-NoPush` bila hanya ingin commit lokal.
+
+> Bila push gagal (mis. sedang offline), commit tetap aman tersimpan secara lokal.
+> Jalankan `git push` saat koneksi kembali.
+
+---
+
 ## 📝 Catatan Teknis
 
 - Status checker memakai HTTP request (`HEAD`, fallback `GET`) dengan `stream=True`

@@ -1,0 +1,5 @@
+# Pastikan hook git selalu memakai line-ending LF (wajib untuk shebang di Windows)
+.githooks/* text eol=lf
+
+# Python
+*.py text eol=lf

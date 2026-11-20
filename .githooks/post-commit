@@ -1,0 +1,23 @@
+#!/bin/sh
+# ---------------------------------------------------------------------------
+# Git hook: AUTO-PUSH ke GitHub setiap kali ada commit baru.
+# Dipasang lewat:  git config core.hooksPath .githooks
+#
+# Hook ini sengaja TIDAK menggagalkan proses commit bila push gagal
+# (misalnya sedang offline) — commit tetap tersimpan lokal.
+# ---------------------------------------------------------------------------
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+# Cek apakah branch ini sudah punya remote upstream
+if git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+    if git push origin "$branch"; then
+        echo "[auto-push] ✔ Perubahan berhasil dikirim ke GitHub (branch: $branch)."
+    else
+        echo "[auto-push] ✖ Push gagal (mungkin offline). Jalankan 'git push' manual nanti."
+    fi
+else
+    echo "[auto-push] Dilewati: branch '$branch' belum punya remote upstream."
+fi
+
+exit 0
