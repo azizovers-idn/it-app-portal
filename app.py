@@ -44,7 +44,12 @@ DATA_FILE = BASE_DIR / "data.json"
 CHECK_TIMEOUT = float(os.getenv("CHECK_TIMEOUT", "5"))        # timeout per request (detik)
 STATUS_CACHE_TTL = int(os.getenv("STATUS_CACHE_TTL", "60"))   # masa berlaku cache status (detik)
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "16"))             # jumlah thread paralel
-VERIFY_TLS = os.getenv("VERIFY_TLS", "false").lower() in ("1", "true", "yes")
+# Verifikasi sertifikat SSL: AMAN secara default (true).
+# Aplikasi internal yang memakai CA/self-signed TIDAK boleh memaksa kita
+# mematikan verifikasi secara global. Solusinya per-aplikasi via data.json:
+#   - "ca_bundle": "/path/ke/corporate-ca.pem"  -> verifikasi TETAP AKTIF (disarankan)
+#   - "verify_tls": false                       -> lewati verifikasi hanya untuk app ini
+VERIFY_TLS = os.getenv("VERIFY_TLS", "true").lower() in ("1", "true", "yes")
 USER_AGENT = "IT-Portal-StatusChecker/1.0"
 
 # Palet warna aksen kartu. Key ini yang dipakai di field "color" pada data.json.
@@ -57,6 +62,7 @@ ACCENT_COLORS: dict[str, tuple[str, str]] = {
     "violet":  ("#8b5cf6", "#d946ef"),
     "cyan":    ("#06b6d4", "#0ea5e9"),
     "orange":  ("#fb923c", "#f43f5e"),
+    "red":     ("#ef4444", "#dc2626"),
     "teal":    ("#14b8a6", "#22c55e"),
     "slate":   ("#64748b", "#475569"),
 }
@@ -129,6 +135,14 @@ def load_portal(force: bool = False) -> dict[str, Any]:
             str(item.get("color", "")).lower(), DEFAULT_ACCENT
         )
 
+        # --- Verifikasi SSL per-aplikasi (tanpa mematikan verifikasi global) ---
+        ca_bundle = item.get("ca_bundle")
+        ca_bundle = str(ca_bundle).strip() if ca_bundle else None
+        if ca_bundle:
+            verify: Any = ca_bundle          # path CA korporat -> verifikasi aktif
+        else:
+            verify = bool(item.get("verify_tls", VERIFY_TLS))
+
         apps.append(
             {
                 "id": app_id,
@@ -144,11 +158,16 @@ def load_portal(force: bool = False) -> dict[str, Any]:
                 "icon_svg": icon if is_svg else None,
                 "accent_from": color_from,
                 "accent_to": color_to,
+                # Nilai `verify` diteruskan ke requests saat status check:
+                # True/False (bool) atau string path CA bundle.
+                "verify": verify,
             }
         )
 
-    # Urutkan: kelompok kategori, lalu alfabetis
-    apps.sort(key=lambda a: (a["category"].lower(), a["name"].lower()))
+    # Urutkan: kelompokkan per kategori. Karena sort Python bersifat STABIL,
+    # urutan aplikasi di dalam satu kategori mengikuti urutan penulisan di data.json
+    # (jadi Anda bisa mengatur urutan tampil langsung dari data.json).
+    apps.sort(key=lambda a: a["category"].lower())
 
     # Daftar kategori unik (mempertahankan urutan)
     categories: list[str] = []
@@ -171,11 +190,16 @@ def load_portal(force: bool = False) -> dict[str, Any]:
 # ============================================================================
 # 2. STATUS CHECKER
 # ============================================================================
-def _probe(url: str, method: str) -> int | None:
+def _probe(url: str, method: str, verify: Any = True) -> int | None:
     """Kirim HTTP request ke `url`. Return status code, atau None bila gagal.
 
     `stream=True` dipakai agar kita hanya mengambil header (body tidak diunduh),
     sehingga pengecekan tetap ringan walau halaman tujuan besar.
+
+    `verify` dapat berupa:
+      - True  -> verifikasi SSL normal (default)
+      - False -> lewati verifikasi (khusus aplikasi internal tertentu)
+      - str   -> path ke file CA (PEM) sehingga verifikasi tetap aktif
     """
     try:
         with requests.request(
@@ -183,7 +207,7 @@ def _probe(url: str, method: str) -> int | None:
             url,
             timeout=CHECK_TIMEOUT,
             allow_redirects=True,
-            verify=VERIFY_TLS,
+            verify=verify,
             headers={"User-Agent": USER_AGENT},
             stream=True,
         ) as resp:
@@ -195,6 +219,7 @@ def _probe(url: str, method: str) -> int | None:
 def check_single(portal_app: dict[str, Any]) -> dict[str, Any]:
     """Cek satu aplikasi: coba HEAD dulu, fallback ke GET bila perlu."""
     url = portal_app["url"]
+    verify = portal_app.get("verify", VERIFY_TLS)
     started = time.perf_counter()
     result: dict[str, Any] = {
         "id": portal_app["id"],
@@ -206,9 +231,9 @@ def check_single(portal_app: dict[str, Any]) -> dict[str, Any]:
     }
 
     # Beberapa server tidak mengizinkan HEAD (405/403/501) -> fallback GET
-    code = _probe(url, "HEAD")
+    code = _probe(url, "HEAD", verify)
     if code is None or code in (403, 405, 501):
-        code = _probe(url, "GET")
+        code = _probe(url, "GET", verify)
 
     result["latency_ms"] = int((time.perf_counter() - started) * 1000)
 

@@ -9,7 +9,28 @@
       "icon": "fa-solid fa-print",
       "description": "Monitoring dan pengelolaan printer.",
       "category": "Infrastructure",
-      "color": "blue"
+      "color": "blue",
+      "verify_tls": false
+    },
+    {
+      "id": "zabbix",
+      "name": "Zabbix",
+      "url": "https://10.1.99.203/index.php",
+      "icon": "fa-solid fa-server",
+      "description": "Server and Network Monitoring.",
+      "category": "Infrastructure",
+      "color": "red",
+      "verify_tls": false
+    },
+    {
+      "id": "grafana",
+      "name": "Grafana",
+      "url": "https://10.1.99.203/grafana",
+      "icon": "fa-solid fa-chart-line",
+      "description": "Monitoring Dashboard and Data Visualization.",
+      "category": "Infrastructure",
+      "color": "orange",
+      "verify_tls": false
     }
   ]
 }

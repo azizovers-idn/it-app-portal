@@ -50,15 +50,44 @@ disimpan (berdasarkan waktu modifikasi file), **tanpa perlu restart**.
   "url": "https://app.internal.local",  // wajib
   "icon": "fa-solid fa-server",         // class FontAwesome, ATAU tag <svg>...</svg>
   "description": "Penjelasan singkat.", // opsional
-  "category": "Infrastruktur",          // opsional (default: "Umum")
-  "color": "emerald",                   // opsional: indigo, blue, emerald, amber,
+  "category": "Infrastructure",         // opsional (default: "Umum")
+  "color": "emerald",                   // opsional: indigo, blue, emerald, amber, red,
                                         //           rose, violet, cyan, orange, teal, slate
-  "id": "kode-unik"                     // opsional (dibuat otomatis dari nama)
+  "id": "kode-unik",                    // opsional (dibuat otomatis dari nama)
+  "ca_bundle": "/etc/ssl/corp-ca.pem",  // opsional: path CA korporat (verifikasi tetap aktif)
+  "verify_tls": false                   // opsional: lewati verifikasi SSL HANYA untuk app ini
 }
 ```
 
+> **Urutan tampil** mengikuti urutan penulisan di `data.json` (di dalam kategori yang sama).
+>
+> Lihat bagian **🔐 Sertifikat SSL Internal** untuk penanganan yang benar.
+
 > **Ikon SVG:** isi field `icon` dengan tag SVG lengkap (diawali `<svg`), contoh:
 > `"icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='...'/></svg>"`
+
+---
+
+## 🔐 Sertifikat SSL Internal
+
+Server internal (mis. `10.1.99.203`, `printer-dashboard.irt.co.id`) umumnya memakai
+**sertifikat self-signed / CA internal** yang tidak dikenal sistem operasi.
+Verifikasi SSL **tidak boleh dimatikan secara global**.
+
+Tiga tingkatan solusi, dari yang paling disarankan:
+
+| Cara | Field / Env | Aman? | Keterangan |
+|---|---|---|---|
+| **1. Pasang CA korporat** (disarankan) | `"ca_bundle": "/path/corp-ca.pem"` | ✅ verifikasi tetap aktif | requests akan memverifikasi memakai CA internal Anda |
+| **2. Lewati verifikasi per-aplikasi** | `"verify_tls": false` | ⚠️ hanya app tersebut | Tidak memengaruhi aplikasi lain |
+| **3. Nonaktifkan semua** | `VERIFY_TLS=false` | ❌ tidak disarankan | Hanya untuk debugging sementara |
+
+Default global sekarang adalah **`VERIFY_TLS=true`** (aman). Aplikasi internal
+disetel satu per satu di `data.json`, contoh:
+
+```json
+{ "id": "zabbix", "name": "Zabbix", "url": "https://10.1.99.203/index.php", "verify_tls": false }
+```
 
 ---
 
@@ -141,7 +170,7 @@ Group=www-data
 WorkingDirectory=/var/www/it-portal
 Environment="PORT=8000"
 Environment="FLASK_DEBUG=false"
-Environment="VERIFY_TLS=false"
+Environment="VERIFY_TLS=true"
 ExecStart=/var/www/it-portal/.venv/bin/gunicorn --bind 127.0.0.1:8000 --workers 3 --threads 4 --timeout 60 wsgi:app
 Restart=always
 
@@ -195,7 +224,7 @@ sudo certbot --nginx -d portal.it-perusahaananda.com
    - **Start Command:** `gunicorn --bind 0.0.0.0:$PORT --workers 3 --threads 4 wsgi:app`
    - **Health Check Path:** `/healthz`
 4. Tambahkan Environment Variables (opsional):
-   `PYTHON_VERSION=3.12.0`, `FLASK_DEBUG=false`, `VERIFY_TLS=false`
+   `PYTHON_VERSION=3.12.0`, `FLASK_DEBUG=false`, `VERIFY_TLS=true`
 5. Klik **Create Web Service**. Render memberi URL seperti
    `https://it-portal.onrender.com`.
 
@@ -252,7 +281,7 @@ Salin `.env.example` menjadi `.env` atau set langsung di panel platform:
 | `CHECK_TIMEOUT` | `5` | Timeout probe status (detik) |
 | `STATUS_CACHE_TTL` | `60` | Lama cache hasil cek status (detik) |
 | `MAX_WORKERS` | `16` | Jumlah thread paralel |
-| `VERIFY_TLS` | `false` | Verifikasi sertifikat SSL (matikan untuk cert self-signed) |
+| `VERIFY_TLS` | `true` | Verifikasi sertifikat SSL. Biarkan `true`; atur per-aplikasi via `ca_bundle` / `verify_tls` di `data.json` |
 
 ---
 
@@ -271,13 +300,29 @@ Contoh respons `/api/status`:
 {
   "cached": false,
   "checked_at": "2026-11-20T03:15:22+00:00",
-  "summary": { "total": 1, "up": 1, "down": 0 },
+  "summary": { "total": 3, "up": 3, "down": 0 },
   "results": {
     "printer-dashboard": {
       "id": "printer-dashboard",
       "status": "UP",
       "http_status": 200,
       "latency_ms": 145,
+      "error": null,
+      "checked_at": "2026-11-20T03:15:22+00:00"
+    },
+    "zabbix": {
+      "id": "zabbix",
+      "status": "UP",
+      "http_status": 200,
+      "latency_ms": 88,
+      "error": null,
+      "checked_at": "2026-11-20T03:15:22+00:00"
+    },
+    "grafana": {
+      "id": "grafana",
+      "status": "UP",
+      "http_status": 301,
+      "latency_ms": 74,
       "error": null,
       "checked_at": "2026-11-20T03:15:22+00:00"
     }
