@@ -31,6 +31,25 @@
       "category": "Infrastructure",
       "color": "orange",
       "verify_tls": false
+    },
+    {
+      "id": "it-ticketing",
+      "name": "IT Ticketing",
+      "url": "http://ticket.irt.co.id/",
+      "icon": "fa-solid fa-ticket",
+      "description": "IT Support Ticketing and Helpdesk System.",
+      "category": "IT Management",
+      "color": "blue"
+    },
+    {
+      "id": "it-asset",
+      "name": "IT Asset Management",
+      "url": "https://asset-it.irt.co.id/",
+      "icon": "fa-solid fa-boxes-stacked",
+      "description": "IT Asset Inventory and Management System.",
+      "category": "IT Management",
+      "color": "green",
+      "verify_tls": false
     }
   ]
 }

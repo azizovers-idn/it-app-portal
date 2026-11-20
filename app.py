@@ -57,6 +57,7 @@ ACCENT_COLORS: dict[str, tuple[str, str]] = {
     "indigo":  ("#6366f1", "#8b5cf6"),
     "blue":    ("#3b82f6", "#06b6d4"),
     "emerald": ("#10b981", "#14b8a6"),
+    "green":   ("#22c55e", "#16a34a"),
     "amber":   ("#f59e0b", "#f97316"),
     "rose":    ("#f43f5e", "#ec4899"),
     "violet":  ("#8b5cf6", "#d946ef"),
