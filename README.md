@@ -52,7 +52,7 @@ disimpan (berdasarkan waktu modifikasi file), **tanpa perlu restart**.
   "description": "Penjelasan singkat.", // opsional
   "category": "Infrastructure",         // opsional (default: "Umum")
   "color": "emerald",                   // opsional: indigo, blue, emerald, green, amber, red,
-                                        //           rose, violet, cyan, orange, teal, slate
+                                        //           rose, violet, purple, cyan, orange, teal, slate
   "id": "kode-unik",                    // opsional (dibuat otomatis dari nama)
   "ca_bundle": "/etc/ssl/corp-ca.pem",  // opsional: path CA korporat (verifikasi tetap aktif)
   "verify_tls": false                   // opsional: lewati verifikasi SSL HANYA untuk app ini

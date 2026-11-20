@@ -50,6 +50,33 @@
       "category": "IT Management",
       "color": "green",
       "verify_tls": false
+    },
+    {
+      "id": "microsoft-365-admin",
+      "name": "Microsoft 365 Admin Center",
+      "url": "https://admin.cloud.microsoft/",
+      "icon": "fa-brands fa-microsoft",
+      "description": "Microsoft 365 Tenant and Service Administration.",
+      "category": "Cloud Administration",
+      "color": "blue"
+    },
+    {
+      "id": "google-admin",
+      "name": "Google Admin Console",
+      "url": "https://admin.google.com/",
+      "icon": "fa-brands fa-google",
+      "description": "Google Workspace User and Organization Administration.",
+      "category": "Cloud Administration",
+      "color": "red"
+    },
+    {
+      "id": "microsoft-entra",
+      "name": "Microsoft Entra Admin Center",
+      "url": "https://entra.microsoft.com/",
+      "icon": "fa-solid fa-shield-halved",
+      "description": "Identity and Access Management (IAM).",
+      "category": "Cloud Administration",
+      "color": "purple"
     }
   ]
 }
