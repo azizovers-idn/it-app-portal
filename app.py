@@ -27,6 +27,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 import requests
 import urllib3
@@ -150,6 +151,8 @@ def load_portal(force: bool = False) -> dict[str, Any]:
                 "id": app_id,
                 "name": name,
                 "url": url,
+                # Host saja (tanpa skema/path) untuk ditampilkan di kartu
+                "host": urlparse(url).netloc or url,
                 "description": str(item.get("description", "")).strip(),
                 "category": str(item.get("category", "Umum")).strip() or "Umum",
                 # Pencarian & filter dilakukan di client, jadi siapkan versi lowercase

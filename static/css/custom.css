@@ -126,23 +126,49 @@
   background-color: rgba(100, 116, 139, 0.65);
 }
 
-/* ---------- 7. Background gambar halaman ----------
-   Ganti gambar dengan menimpa file: static/img/background.jpg
-   Ingin mematikan gambar? Hapus/komentari blok .portal-bg-image di bawah. */
-:root {
-  --portal-bg-image: url("../img/background.jpg");
+/* ---------- 7. Background halaman (gambar + overlay) ----------
+   Gambar dan overlay ditulis sebagai DUA LAPISAN pada `background-image` body,
+   sehingga keduanya selalu menutupi area yang persis sama — tidak ada bagian
+   halaman yang "lolos" dari overlay.
+   - Ganti gambar : timpa file static/img/background.jpg
+   - Matikan gambar: hapus baris url("../img/background.jpg") di kedua aturan
+   - Atur gelap/terang: ubah nilai rgba() pada linear-gradient */
+body {
+  background-color: #eef2f7;
+  background-image:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.78) 0%, rgba(248, 250, 252, 0.45) 45%, rgba(241, 245, 249, 0.82) 100%),
+    url("../img/background.jpg");
+  background-size: cover, cover;
+  background-position: center center, center center;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
 }
 
-.portal-bg-image {
-  position: fixed;
-  inset: 0;
-  z-index: -30;              /* di belakang overlay (-20) dan blob (-10) */
-  background-image: var(--portal-bg-image);
-  background-size: cover;     /* penuhi seluruh layar tanpa distorsi */
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-color: #0b1220;  /* fallback bila gambar gagal dimuat */
+.dark body {
+  background-color: #020617;
+  background-image:
+    linear-gradient(180deg, rgba(2, 6, 23, 0.86) 0%, rgba(2, 6, 23, 0.90) 45%, rgba(2, 6, 23, 0.95) 100%),
+    url("../img/background.jpg");
 }
+
+/* ---------- 9. Indikator ringkas status sistem ---------- */
+/* Ditulis sebagai CSS biasa agar warna tetap pasti walau class diubah JS
+   (Tailwind CDN hanya men-generate class yang ada di HTML awal). */
+#system-summary {
+  transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+}
+#system-dot {
+  transition: background-color 0.25s ease;
+}
+.summary-unknown { border-color: rgba(148, 163, 184, 0.45); }
+.summary-ok      { border-color: rgba(16, 185, 129, 0.5); }
+.summary-warn    { border-color: rgba(245, 158, 11, 0.55); }
+.summary-bad     { border-color: rgba(244, 63, 94, 0.55); }
+
+.summary-unknown #system-dot { background-color: #94a3b8; }
+.summary-ok      #system-dot { background-color: #10b981; }
+.summary-warn    #system-dot { background-color: #f59e0b; }
+.summary-bad     #system-dot { background-color: #f43f5e; }
 
 /* ---------- 8. Batasi deskripsi menjadi 2 baris ---------- */
 .line-clamp-2 {

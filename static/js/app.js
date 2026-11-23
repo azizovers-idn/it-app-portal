@@ -177,6 +177,30 @@
     }
   }
 
+  /** Perbarui indikator ringkas kesehatan seluruh sistem di bagian hero. */
+  function updateSystemSummary(summary) {
+    const box = document.getElementById("system-summary");
+    const text = document.getElementById("system-summary-text");
+    if (!box || !text || !summary) return;
+
+    // Bersihkan state sebelumnya, lalu pasang state yang sesuai.
+    box.classList.remove("summary-unknown", "summary-ok", "summary-warn", "summary-bad");
+
+    if (summary.down === 0 && summary.total > 0) {
+      box.classList.add("summary-ok");
+      text.textContent = `Semua sistem normal · ${summary.up}/${summary.total} online`;
+    } else if (summary.up > 0) {
+      box.classList.add("summary-warn");
+      text.textContent = `${summary.down} bermasalah · ${summary.up}/${summary.total} online`;
+    } else if (summary.total > 0) {
+      box.classList.add("summary-bad");
+      text.textContent = "Semua sistem offline";
+    } else {
+      box.classList.add("summary-unknown");
+      text.textContent = "Belum ada aplikasi";
+    }
+  }
+
   /** Ambil status terbaru dari backend. */
   async function fetchStatus(force = false) {
     refreshIcon.classList.add("animate-spin");
@@ -197,6 +221,7 @@
       if (data.summary) {
         statUp.textContent = data.summary.up;
         statDown.textContent = data.summary.down;
+        updateSystemSummary(data.summary);
       }
       if (data.checked_at) {
         lastChecked.textContent = new Date(data.checked_at).toLocaleString("id-ID");
@@ -246,6 +271,9 @@
   /* =======================================================================
      6. BOOTSTRAP
      ======================================================================= */
+  const yearEl = $("#year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
   applyFilters();          // Sinkronkan tampilan awal
   fetchStatus();           // Cek status saat halaman dibuka
   setInterval(fetchStatus, CONFIG.refreshInterval); // Polling berkala
