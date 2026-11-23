@@ -126,7 +126,25 @@
   background-color: rgba(100, 116, 139, 0.65);
 }
 
-/* ---------- 7. Batasi deskripsi menjadi 2 baris ---------- */
+/* ---------- 7. Background gambar halaman ----------
+   Ganti gambar dengan menimpa file: static/img/background.jpg
+   Ingin mematikan gambar? Hapus/komentari blok .portal-bg-image di bawah. */
+:root {
+  --portal-bg-image: url("../img/background.jpg");
+}
+
+.portal-bg-image {
+  position: fixed;
+  inset: 0;
+  z-index: -30;              /* di belakang overlay (-20) dan blob (-10) */
+  background-image: var(--portal-bg-image);
+  background-size: cover;     /* penuhi seluruh layar tanpa distorsi */
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #0b1220;  /* fallback bila gambar gagal dimuat */
+}
+
+/* ---------- 8. Batasi deskripsi menjadi 2 baris ---------- */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

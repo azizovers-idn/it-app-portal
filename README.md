@@ -342,6 +342,9 @@ Contoh respons `/api/status`:
 - **Ganti FontAwesome → SVG** → isi field `icon` dengan tag `<svg>`, tidak perlu ubah kode lain.
 - **Mengganti CDN Tailwind ke build lokal** (untuk produksi serius) → ganti
   `<script src="https://cdn.tailwindcss.com">` dengan file CSS hasil build Tailwind CLI.
+- **Background gambar** → timpa file `static/img/background.jpg`. Untuk mematikan
+  gambar, hapus/komentari blok `.portal-bg-image` di `static/css/custom.css`.
+  Overlay gelap/terang diatur pada div `-z-20` di `templates/index.html`.
 
 ---
 

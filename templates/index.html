@@ -53,6 +53,14 @@
 
 <body class="min-h-screen bg-slate-100 text-slate-800 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
 
+  <!-- ===================== LAPISAN BACKGROUND ===================== -->
+  <!-- Gambar background (diatur di static/css/custom.css -> .portal-bg-image) -->
+  <div class="portal-bg-image" aria-hidden="true"></div>
+
+  <!-- Overlay agar teks & kartu tetap terbaca di atas gambar -->
+  <div class="pointer-events-none fixed inset-0 -z-20 bg-gradient-to-b from-white/75 via-white/45 to-slate-100/80 dark:from-slate-950/85 dark:via-slate-950/90 dark:to-slate-950/95"
+       aria-hidden="true"></div>
+
   <!-- Dekorasi background (blob gradient) -->
   <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
     <div class="absolute -top-40 -left-32 h-96 w-96 rounded-full bg-indigo-400/20 blur-3xl dark:bg-indigo-600/10"></div>
@@ -170,7 +178,7 @@
            data-search="{{ app.search_blob }}"
            data-category="{{ app.category }}"
            style="animation-delay: {{ loop.index0 * 25 }}ms"
-           class="app-card group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm outline-none transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-xl focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/60 dark:hover:bg-slate-900">
+           class="app-card group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 p-5 shadow-sm outline-none backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:bg-white hover:shadow-xl focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-800 dark:bg-slate-900/80 dark:hover:bg-slate-900/95">
 
           <!-- Efek glow mengikuti warna aksen aplikasi -->
           <div class="pointer-events-none absolute inset-x-0 -top-24 h-32 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-40"
