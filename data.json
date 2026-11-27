@@ -33,6 +33,16 @@
       "verify_tls": false
     },
     {
+      "id": "ipam",
+      "name": "IPAM (phpIPAM)",
+      "url": "https://ipam.irt.co.id/",
+      "icon": "fa-solid fa-network-wired",
+      "description": "IP Address Management — pemetaan & alokasi IP jaringan.",
+      "category": "Infrastructure",
+      "color": "teal",
+      "verify_tls": false
+    },
+    {
       "id": "it-ticketing",
       "name": "IT Ticketing",
       "url": "http://ticket.irt.co.id/",
